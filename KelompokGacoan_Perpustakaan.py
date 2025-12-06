@@ -11,29 +11,29 @@ kembali = {}
 # =================== FUNGSI TAMBAHAN =========================== #
 
 def validasi_tanggal_ddmmyyyy(tanggal):
-    if len(tanggal) != 10:
+    # Format harus dd-mm-yyyy
+    if len(tanggal) != 10 or tanggal[2] != '-' or tanggal[5] != '-':
         return False
-    if tanggal[2] != '-' or tanggal[5] != '-':
-        return False
-    
+
     d, m, y = tanggal.split('-')
     if not (d.isdigit() and m.isdigit() and y.isdigit()):
         return False
 
-    d = int(d); m = int(m); y = int(y)
+    d, m, y = int(d), int(m), int(y)
 
-    if not (1 <= m <= 12):
+    # Validasi bulan
+    if not 1 <= m <= 12:
         return False
 
+    # Jumlah hari per bulan
     hari_bulan = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
+    # Tahun kabisat
     if y % 4 == 0:
         hari_bulan[1] = 29
 
-    if d < 1 or d > hari_bulan[m - 1]:
-        return False
-    
-    return True
+    # Validasi hari
+    return 1 <= d <= hari_bulan[m - 1]
 
 
 def hitung_denda(tgl_pinjam, tgl_kembali):
